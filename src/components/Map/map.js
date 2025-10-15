@@ -14,7 +14,7 @@ class Map {
         sources: map_source,
         version: 8,
         layers: [],
-        glyphs: '/font/{fontstack}/{range}.pbf',
+        glyphs: './font/{fontstack}/{range}.pbf',
       },
       attributionControl: false,
       fadeDuration: 0, //  去除渐隐渐显效果
