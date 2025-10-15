@@ -15,7 +15,7 @@ class Map {
         version: 8,
         layers: [],
         // 使用相对路径，适应GitHub Pages子目录部署
-        glyphs: './font/{fontstack}/{range}.pbf',
+        glyphs: 'https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf',
       },
       attributionControl: false,
       fadeDuration: 0, //  去除渐隐渐显效果
