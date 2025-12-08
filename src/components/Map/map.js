@@ -43,7 +43,7 @@ class Map {
     this.map.on('load', this.handleMapLoad.bind(this))
   }
   handleMapLoad() {
-    this.switchMap('satelliteMap')
+    this.switchMap('seaMapDayStandard')
   }
   switchMap(mapType) {
     this.clearExistTiles()

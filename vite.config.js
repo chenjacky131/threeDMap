@@ -12,4 +12,17 @@ export default defineConfig({
       '@Components': fileURLToPath(new URL('./src/components', import.meta.url)),
     },
   },
+  // 本地开发代理配置
+  server: {
+    host: '0.0.0.0',
+    port: 5173,
+    proxy: {
+  "/api/tiles": {
+    // 海图
+    target: "https://img.cniship.com",
+    changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
+  },
+    }
+  }
 })

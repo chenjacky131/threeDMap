@@ -14,4 +14,10 @@ export const map_source = {
     tiles: [`https://t0.tianditu.gov.cn/DataServer/?T=img_w&X={x}&Y={y}&L={z}&tk=${tk}`],
     tileSize: 256,
   },
+  "seaMapDayStandard:5": {
+    //  海图白天标准
+    type: "raster",
+    tiles: [`/api/tiles/day/standard/{z}/{y}/{x}.png`],
+    tileSize: 256,
+  },
 }
