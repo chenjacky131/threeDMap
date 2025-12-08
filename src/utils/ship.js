@@ -27,10 +27,11 @@ class Ship {
       type: 'fill',
       source: 'shipsSource',
       paint: {
-        'fill-color': '#faf763',
-        'fill-outline-color': '#444444',
+        'fill-color': '#70500cff',
+        'fill-outline-color': '#0066ffff',
       },
     }
+    this.bindHandleClick = this.handleClick.bind(this);
   }
   init() {
     this.map.on('zoomend', this.generateShipGeoJson.bind(this))
@@ -38,7 +39,33 @@ class Ship {
       this.map.removeLayer(shipsLayerName)
       this.map.removeLayer(shipsNameLayerName)
     })
+    this.map.on("mouseenter", shipsLayerName, this.handleMouseEnter.bind(this));
+    this.map.on("mouseleave", shipsLayerName, this.handleMouseLeave.bind(this));
+    this.map.on("click", shipsLayerName, this.bindHandleClick);
     this.pollingData()
+  }
+  //  设置地图鼠标状态
+  setMouseCursor(type) {
+    if (this.map) {
+      const canvas = this.map.getCanvas();
+      canvas.classList = "maplibregl-canvas " + type;
+    }
+  }
+  //  处理船舶鼠标进入事件
+  handleMouseEnter() {
+    this.setMouseCursor("pointer");
+  }
+  //  处理船舶鼠标离开事件
+  handleMouseLeave() {
+    this.setMouseCursor("");
+  }
+  handleClick(e){
+    const features = this.map.queryRenderedFeatures(e.point, {
+      layers: [shipsLayerName],
+    });
+    const feature = features[0];
+    const properties = feature.properties;
+    console.log(properties)
   }
   requestData() {
     //  请求船舶数据并绘制
@@ -209,6 +236,10 @@ class Ship {
       })
       rotatedPolygon.properties = {
         shipName,
+        lat: lat / 600000,
+        lng: lon / 600000,
+        heading: shipHead,
+        course: course / 10,
       }
       this.shipsGeoJson.features.push(rotatedPolygon)
     }

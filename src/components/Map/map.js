@@ -24,6 +24,8 @@ class Map {
     })
     //  重写添加图层方法，增加自动按id名称中的(layerName:index)index的值来堆叠
     const originalAddLayer = this.map.addLayer
+      const originalGetLayer = this.map.getLayer;
+      const originalRemoveLayer = this.map.removeLayer;
     this.map.addLayer = function (layer, beforeId) {
       originalAddLayer.call(this, layer, beforeId)
       const allLayers = Object.keys(this.style._layers)
@@ -40,6 +42,11 @@ class Map {
       }
       return this
     }
+      this.map.removeLayer = function (layerName) {
+        if (originalGetLayer.call(this, layerName)) {
+          originalRemoveLayer.call(this, layerName);
+        }
+      };
     this.map.on('load', this.handleMapLoad.bind(this))
   }
   handleMapLoad() {
@@ -65,6 +72,13 @@ class Map {
       if (Object.keys(map_source).includes(key)) {
         this.map.removeLayer(key)
       }
+    }
+  }
+  //  设置地图鼠标状态
+  setMouseCursor(type) {
+    if (this.map) {
+      const canvas = this.map.getCanvas();
+      canvas.classList = "maplibregl-canvas " + type;
     }
   }
 }

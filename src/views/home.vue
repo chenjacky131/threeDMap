@@ -8,6 +8,9 @@
         {{ item.name }}
       </div>
     </div>
+    <div class="ship-info-popup">
+      船舶信息
+    </div>
   </div>
 </template>
 <script setup>
@@ -46,5 +49,15 @@ function changeMode(item) {
       cursor: pointer;
     }
   }
+}
+.ship-info-popup {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 300px;
+    height: auto;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 4px;
+    color: #fff;
 }
 </style>

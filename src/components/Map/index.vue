@@ -19,5 +19,11 @@ onMounted(() => {
 #map {
   height: 100%;
   flex: 1;
+  :deep(.maplibregl-canvas) {
+    cursor: grab !important;
+    &.pointer {
+      cursor: pointer !important;
+    }
+  }
 }
 </style>
