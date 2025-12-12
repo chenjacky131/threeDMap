@@ -1,6 +1,7 @@
 import { getMapRatio } from '@/components/Map/map.js'
 import { mockData } from '../mock/index.js'
 import * as turf from '@turf/turf'
+import store from '@/store/index.js'
 const shipsLayerName = 'shipsLayer:84'
 const shipsNameLayerName = 'shipsNameLayer:86'
 const triangleShipSize = 0.5 //  三角形船图标的尺寸，1倍尺寸是20*39
@@ -60,12 +61,14 @@ class Ship {
     this.setMouseCursor("");
   }
   handleClick(e){
+    //  点击弹出船舶信息
     const features = this.map.queryRenderedFeatures(e.point, {
       layers: [shipsLayerName],
     });
     const feature = features[0];
     const properties = feature.properties;
-    console.log(properties)
+    store.commit('SET_SHOW_SHIP_INFO', true)
+    store.commit('SET_CURRENT_SHIP_INFO', properties)
   }
   requestData() {
     //  请求船舶数据并绘制
@@ -213,10 +216,9 @@ class Ship {
     for (let i = 0; i < this.shipData.length; i++) {
       //  处理数据
       let ship = this.shipData[i]
-      const { length, breadth, lat, lon, heading, course, customName, name } = ship
-
-      const shipName = customName ? customName : name
+      const { length, breadth, lat, lon, heading, course, speed, customName, name } = ship
       let center = [lon / 600000, lat / 600000]
+      const shipName = customName ? customName : name
       const shipHead = heading && heading !== -1 ? heading : course / 10
       const condition = this.realShipIconCondition({ length, breadth, zoom })
       const centerObj = {
@@ -236,6 +238,7 @@ class Ship {
       })
       rotatedPolygon.properties = {
         shipName,
+        speed,
         lat: lat / 600000,
         lng: lon / 600000,
         heading: shipHead,

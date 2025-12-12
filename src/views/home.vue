@@ -8,9 +8,6 @@
         {{ item.name }}
       </div>
     </div>
-    <div class="ship-info-popup">
-      船舶信息
-    </div>
   </div>
 </template>
 <script setup>
@@ -18,6 +15,7 @@ import { ref } from 'vue';
 import Map from '@Components/Map/index.vue';
 import EngineRoom from '@Components/EngineRoom/index.vue';
 import RadarAndVideo from '@Components/RadarAndVideo/index.vue';
+
 const mode = ref("map");
 const navItems = ref([
   { name: '海图', mode: 'map'},
@@ -49,15 +47,5 @@ function changeMode(item) {
       cursor: pointer;
     }
   }
-}
-.ship-info-popup {
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 300px;
-    height: auto;
-    background: rgba(0, 0, 0, 0.7);
-    border-radius: 4px;
-    color: #fff;
 }
 </style>

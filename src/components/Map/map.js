@@ -2,6 +2,8 @@ import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import * as turf from '@turf/turf'
 import { map_source } from '@/utils/constant.js'
+import store from '@/store/index.js'
+const shipsLayerName = 'shipsLayer:84'
 class Map {
   constructor() {}
   initMap(id) {
@@ -47,7 +49,16 @@ class Map {
           originalRemoveLayer.call(this, layerName);
         }
       };
-    this.map.on('load', this.handleMapLoad.bind(this))
+    this.map.on('load', this.handleMapLoad.bind(this));
+    this.map.on('click', (e) => { //  点击隐藏船舶信息
+      const features = this.map.queryRenderedFeatures(e.point, {
+        layers: [shipsLayerName],
+      });
+      if (features.length === 0) {
+        store.commit('SET_SHOW_SHIP_INFO', false);
+        store.commit('SET_CURRENT_SHIP_INFO', null);
+      }
+    })
   }
   handleMapLoad() {
     this.switchMap('seaMapDayStandard')
