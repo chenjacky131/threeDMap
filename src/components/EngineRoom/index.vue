@@ -1,7 +1,7 @@
 <template>
   <div class="engine-room">
     <div class="engine-room-item">
-      <div class="time">{{ timeString }}</div>
+      <div class="time">{{ store.state.time }}</div>
       <div class="ship-head">
         <div class="data-item top">艏向 127.6°</div>
         <div class="data-item right-top">风向(R) 180.0°</div>
@@ -9,6 +9,7 @@
         <div class="data-item left-bottom">航速 17.0kn</div>
         <div class="data-item left-top">航向 131.1°</div>
         <div class="ship-nav">
+          <div class="blue-line"></div>
           <div class="nav-txt N">N</div>
           <div class="nav-txt S">S</div>
           <div class="nav-txt W">W</div>
@@ -61,7 +62,8 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import * as echarts from 'echarts'
-const timeString = ref('--:--:--')
+import { useStore } from 'vuex'
+const store = useStore()
 const timer = ref(null)
 
 onMounted(() => {
@@ -70,7 +72,10 @@ onMounted(() => {
     const hours = time.getHours().toString().padStart(2, '0')
     const minutes = time.getMinutes().toString().padStart(2, '0')
     const seconds = time.getSeconds().toString().padStart(2, '0')
-    timeString.value = `${hours}:${minutes}:${seconds}`
+    const timeString = `${hours}:${minutes}:${seconds}`;
+    const dateTimeString = `${time.getFullYear()}-${time.getMonth() + 1}-${time.getDate()} ${hours}:${minutes}:${seconds}`;
+    store.commit('SET_TIME', timeString);
+    store.commit('SET_DATE_TIME', dateTimeString);  
   }, 1000)
 
   let chartDom1 = document.getElementById('chart1')
@@ -412,7 +417,7 @@ onMounted(() => {
           size: 10,
           itemStyle: {
             borderColor: '#26b0e1',
-            borderWidth: 1
+            borderWidth: 1,
           },
         },
         pointer: {
@@ -430,16 +435,16 @@ onMounted(() => {
         },
         title: {
           offsetCenter: [0, '-30%'],
-          color: "#fff"
+          color: '#fff',
         },
         data: [
           {
             value: -2.7,
-            name: '左舵角'
+            name: '左舵角',
           },
         ],
       },
-    ]
+    ],
   }
   setTimeout(() => {
     myChart1.setOption(option1)
@@ -506,6 +511,38 @@ onUnmounted(() => {
       height: 150px;
       background: #1d3460;
       z-index: 2;
+    }
+    .blue-line {
+      width: 150px;
+      height: 1px;
+      background: #0085ff;
+      position: absolute;
+      top: 50%;
+      z-index: 4;
+      left: 50%;
+      transform: translateX(-50%) rotate(41deg);
+      &::after {
+        content: '';
+        width: 10px;
+        height: 10px;
+        background: #0085ff;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+      }
+      &::before {
+        content: '';
+        position: absolute;
+        border-bottom: 15px solid #0085ff;
+        border-left: 8px solid transparent;
+        border-right: 9px solid transparent;
+        border-top: 10px solid transparent;
+        right: 6px;
+        transform: rotate(90deg) translateY(-50%);
+        top: -12px;
+      }
     }
     .cross {
       position: absolute;

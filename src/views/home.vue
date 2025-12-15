@@ -33,6 +33,7 @@ function changeMode(item) {
   padding-bottom: 40px;
   box-sizing: border-box;
   display: flex;
+  overflow: hidden;
   .nav{
     position: absolute;
     bottom: 0;
