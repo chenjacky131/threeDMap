@@ -200,6 +200,7 @@
         </div>
         <div class="radar-bg">
           <div class="inner"></div>
+          <img :src="radarImg" alt="" class="radar-echo">
         </div>
         <div class="scan-line"></div>
       </div>
@@ -211,7 +212,7 @@
   </div>
 </template>
 <script setup>
-import { watch, ref } from 'vue'
+import { watch, ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
 const store = useStore()
 
@@ -222,7 +223,41 @@ const props = defineProps({
   },
 })
 const showVideo = ref(false)
+const radarImg = ref(radar1);
+const timer = ref(null);
 import video1 from '@/assets/video/video1.mp4'
+import radar1 from '@/assets/img/radar-1.png'
+import radar2 from '@/assets/img/radar-2.png'
+import radar3 from '@/assets/img/radar-3.png'
+import radar4 from '@/assets/img/radar-4.png'
+import radar5 from '@/assets/img/radar-5.png'
+onMounted(() => {
+  let num = 1;
+  timer.value = setInterval(() => {
+    switch(num) {
+      case 1:
+        radarImg.value = radar1;
+        break;
+      case 2:
+        radarImg.value = radar2;
+        break;
+      case 3:
+        radarImg.value = radar3;
+        break;
+      case 4:
+        radarImg.value = radar4;
+        break;
+      case 5:
+        radarImg.value = radar5;
+        break;
+    }
+    if(num === 5) {
+      num = 1;
+    } else {
+      num++;
+    }
+  }, 5000);
+})
 watch(
   () => props.mode,
   (newMode) => {
@@ -883,6 +918,14 @@ watch(
         border-radius: 50%;
         background: conic-gradient(from 0deg at 50% 50%, green, transparent);
         animation: radar-bg 5s linear infinite;
+      }
+      .radar-echo{
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 2;
       }
     }
     .scan-line {
