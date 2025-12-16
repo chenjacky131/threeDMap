@@ -38,7 +38,7 @@
         </div>
       </div>
       <div class="ship-middle">
-        <div class="chart">
+        <div class="chart l">
           <div id="chart1"></div>
         </div>
         <div class="chart">
@@ -61,6 +61,7 @@ import * as echarts from 'echarts'
 import { useStore } from 'vuex'
 const store = useStore()
 const timer = ref(null)
+const timer2 = ref(null)
 
   let option1, option2, option3, option5, option6
 onMounted(() => {
@@ -71,14 +72,14 @@ onMounted(() => {
     const seconds = time.getSeconds().toString().padStart(2, '0')
     const dateTimeString = `${time.getFullYear()}-${time.getMonth() + 1}-${time.getDate()} ${hours}:${minutes}:${seconds}`;
     store.commit('SET_DATE_TIME', dateTimeString);
-    
+  }, 1000)
+  timer2.value = setInterval(() => {
     myChart6.setOption({
       series:[
         {data:[{value: +(Math.random()*20 - 10).toFixed(1)}]}
       ]
     })
-  }, 1000)
-
+  }, 5000)
   let chartDom1 = document.getElementById('chart1')
   let myChart1 = echarts.init(chartDom1)
   let chartDom2 = document.getElementById('chart2')
@@ -640,6 +641,14 @@ onUnmounted(() => {
     .chart {
       height: 50%;
       width: 50%;
+      &.l{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        &>div{
+          width: 50%;
+        }
+      }
       & > div {
         width: 100%;
         height: 100%;
