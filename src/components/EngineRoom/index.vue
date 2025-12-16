@@ -1,13 +1,12 @@
 <template>
   <div class="engine-room">
     <div class="engine-room-item">
-      <div class="time">{{ store.state.time }}</div>
       <div class="ship-head">
         <div class="data-item top">艏向 127.6°</div>
         <div class="data-item right-top">风向(R) 180.0°</div>
         <div class="data-item right-bottom">风速(R) 30.0kn</div>
         <div class="data-item left-bottom">航速 17.0kn</div>
-        <div class="data-item left-top">航向 131.1°</div>
+        <div class="data-item left-top">航向 141.1°</div>
         <div class="ship-nav">
           <div class="blue-line"></div>
           <div class="nav-txt N">N</div>
@@ -48,9 +47,6 @@
         <div class="chart">
           <div id="chart3"></div>
         </div>
-        <div class="chart">
-          <div id="chart4"></div>
-        </div>
       </div>
       <div class="ship-bottom">
         <div id="line"></div>
@@ -66,16 +62,21 @@ import { useStore } from 'vuex'
 const store = useStore()
 const timer = ref(null)
 
+  let option1, option2, option3, option5, option6
 onMounted(() => {
   timer.value = setInterval(() => {
     const time = new Date()
     const hours = time.getHours().toString().padStart(2, '0')
     const minutes = time.getMinutes().toString().padStart(2, '0')
     const seconds = time.getSeconds().toString().padStart(2, '0')
-    const timeString = `${hours}:${minutes}:${seconds}`;
     const dateTimeString = `${time.getFullYear()}-${time.getMonth() + 1}-${time.getDate()} ${hours}:${minutes}:${seconds}`;
-    store.commit('SET_TIME', timeString);
-    store.commit('SET_DATE_TIME', dateTimeString);  
+    store.commit('SET_DATE_TIME', dateTimeString);
+    
+    myChart6.setOption({
+      series:[
+        {data:[{value: +(Math.random()*20 - 10).toFixed(1)}]}
+      ]
+    })
   }, 1000)
 
   let chartDom1 = document.getElementById('chart1')
@@ -84,13 +85,10 @@ onMounted(() => {
   let myChart2 = echarts.init(chartDom2)
   let chartDom3 = document.getElementById('chart3')
   let myChart3 = echarts.init(chartDom3)
-  let chartDom4 = document.getElementById('chart4')
-  let myChart4 = echarts.init(chartDom4)
   let chartDom5 = document.getElementById('line')
   let myChart5 = echarts.init(chartDom5)
   let chartDom6 = document.getElementById('gauge')
   let myChart6 = echarts.init(chartDom6)
-  let option1, option2, option3, option4, option5, option6
 
   option1 = {
     series: [
@@ -133,19 +131,19 @@ onMounted(() => {
         },
         detail: {
           valueAnimation: true,
-          formatter: '{value} rpm',
+          formatter: '{value}%',
           color: '#fff',
           fontSize: 12,
         },
         data: [
           {
-            value: 38,
+            value: 80,
           },
         ],
       },
     ],
     title: {
-      text: '发动机',
+      text: '电池容量',
       textStyle: {
         color: '#fff',
         fontSize: 14,
@@ -206,7 +204,7 @@ onMounted(() => {
       },
     ],
     title: {
-      text: '1#发电机',
+      text: '1号舵浆转速',
       textStyle: {
         color: '#fff',
         fontSize: 14,
@@ -267,68 +265,7 @@ onMounted(() => {
       },
     ],
     title: {
-      text: '2#发电机',
-      textStyle: {
-        color: '#fff',
-        fontSize: 14,
-      },
-      bottom: 0,
-    },
-  }
-  option4 = {
-    series: [
-      {
-        type: 'gauge',
-        axisLine: {
-          lineStyle: {
-            width: 10,
-            color: [
-              [0.7, '#00ff00'],
-              [1, '#fd666d'],
-            ],
-          },
-        },
-        pointer: {
-          itemStyle: {
-            color: '#fff',
-          },
-        },
-        axisTick: {
-          distance: -10,
-          length: 2,
-          lineStyle: {
-            color: '#fff',
-            width: 1,
-          },
-        },
-        splitLine: {
-          distance: -10,
-          length: 10,
-          lineStyle: {
-            color: '#fff',
-            width: 1,
-          },
-        },
-        axisLabel: {
-          color: '#fff',
-          distance: -15,
-          fontSize: 12,
-        },
-        detail: {
-          valueAnimation: true,
-          formatter: '{value} rpm',
-          color: '#fff',
-          fontSize: 12,
-        },
-        data: [
-          {
-            value: 53,
-          },
-        ],
-      },
-    ],
-    title: {
-      text: '3#发电机',
+      text: '2号舵浆转速',
       textStyle: {
         color: '#fff',
         fontSize: 14,
@@ -450,7 +387,6 @@ onMounted(() => {
     myChart1.setOption(option1)
     myChart2.setOption(option2)
     myChart3.setOption(option3)
-    myChart4.setOption(option4)
     myChart5.setOption(option5)
     myChart6.setOption(option6)
   }, 1000)
@@ -520,7 +456,7 @@ onUnmounted(() => {
       top: 50%;
       z-index: 4;
       left: 50%;
-      transform: translateX(-50%) rotate(41deg);
+      transform: translateX(-50%) rotate(51.1deg);
       &::after {
         content: '';
         width: 10px;
@@ -651,7 +587,7 @@ onUnmounted(() => {
       border-bottom-right-radius: 4px;
       left: 50%;
       top: 50%;
-      transform: translate(-50%, -50%) rotate(131deg);
+      transform: translate(-50%, -50%) rotate(127.6deg);
       position: absolute;
       z-index: 3;
     }
