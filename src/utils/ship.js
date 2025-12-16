@@ -1,5 +1,5 @@
 import { getMapRatio } from '@/components/Map/map.js'
-import { mockData } from '../mock/index.js'
+import { mockData1, mockData2,mockData3, mockData4,mockData5,mockData6,mockData7,mockData8,mockData9,mockData10,mockData11,mockData12,mockData13,mockData14, mockData15 } from '../mock/index.js'
 import * as turf from '@turf/turf'
 import store from '@/store/index.js'
 const shipsLayerName = 'shipsLayer:84'
@@ -33,6 +33,7 @@ class Ship {
       },
     }
     this.bindHandleClick = this.handleClick.bind(this);
+    this.counter = 1;
   }
   init() {
     this.map.on('zoomend', this.generateShipGeoJson.bind(this))
@@ -74,10 +75,60 @@ class Ship {
     //  请求船舶数据并绘制
     return new Promise((resolve, _) => {
       setTimeout(() => {
-        this.shipData = [...mockData]
+        switch(this.counter){
+          case 1:
+            this.shipData = [...mockData1];
+            break;
+          case 2:
+            this.shipData = [...mockData2];
+            break;
+          case 3:
+            this.shipData = [...mockData3];
+            break;
+          case 4:
+            this.shipData = [...mockData4];
+            break;
+          case 5:
+            this.shipData = [...mockData5];
+            break;
+          case 6:
+            this.shipData = [...mockData6];
+            break;
+          case 7:
+            this.shipData = [...mockData7];
+            break;
+          case 8:
+            this.shipData = [...mockData8];
+            break;
+          case 9:
+            this.shipData = [...mockData9];
+            break;
+          case 10:
+            this.shipData = [...mockData10];
+            break;
+          case 11:
+            this.shipData = [...mockData11];
+            break;
+          case 12:
+            this.shipData = [...mockData12];
+            break;
+          case 13:
+            this.shipData = [...mockData13];
+            break;
+          case 14:
+            this.shipData = [...mockData14];
+            break;
+          case 15:
+            this.shipData = [...mockData15];
+            break;
+        }
         this.generateShipGeoJson()
+        this.counter +=1;
+        if(this.counter > 15){
+          this.counter = 1;
+        }
         resolve(this.shipData)
-      }, 5000)
+      }, 1000)
     })
   }
   pollingData() {
